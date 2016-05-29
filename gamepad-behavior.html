@@ -23,13 +23,31 @@
       gamepad: {
         type: Object,
         notify: true
+      },
+
+      buttons: {
+        type: Array,
+        notify: true
       }
     },
 
     updateGamepad: function () {
       if(this.supported){
-        this.set('gamepad', undefined); //to force notify, button binding not working properly yet
+        //to force notify of timestamp/axes/other properties
+        this.set('gamepad', undefined);
         this.set('gamepad', navigator.getGamepads()[this.index]);
+        this.set('buttons', []);
+        if (this.gamepad) {
+          //to expose buttons to data binding as it seems the GamepadButton interface
+          //isn't compatible with data binding for some reason
+          var buttons = this.gamepad.buttons;
+          for (var i = 0; i < buttons.length; i++){
+              var button = {};
+              button.pressed = buttons[i].pressed;
+              button.value = buttons[i].value;
+              this.push('buttons', button);
+          }
+        }
       }
     },
 

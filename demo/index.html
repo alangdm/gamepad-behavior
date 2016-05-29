@@ -67,14 +67,14 @@
 
             <div>
               Buttons:
-              <template is="dom-repeat" items="[[gamepad.buttons]]" as="button">
+              <template is="dom-repeat" items="[[buttons]]" as="button">
                 <div>[[index]] - Pressed: [[button.pressed]] Value: [[button.value]]</div>
               </template>
             </div>
 
             <button onclick="updateDemoGamepad()">Update</button>
 
-            <sample-gamepad index="0" gamepad="{{gamepad}}" id="gamepad"></sample-gamepad>
+            <sample-gamepad index="0" gamepad="{{gamepad}}" buttons="{{buttons}}" id="gamepad"></sample-gamepad>
 
             <script>
               var demo2 = document.querySelector('#demo2');
