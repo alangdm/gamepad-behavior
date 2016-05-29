@@ -1,0 +1,60 @@
+<link rel="import" href="../polymer/polymer.html">
+
+
+
+<script>
+
+  GamepadBehavior = {
+
+    properties: {
+      supported: {
+        type: Boolean,
+        readOnly: true,
+        value: function () {
+          return !!navigator.getGamepads;
+        }
+      },
+
+      index: {
+        type: Number,
+        observer: '_indexChanged'
+      },
+
+      gamepad: {
+        type: Object,
+        notify: true
+      }
+    },
+
+    updateGamepad: function () {
+      if(this.supported){
+        this.set('gamepad', undefined); //to force notify, button binding not working properly yet
+        this.set('gamepad', navigator.getGamepads()[this.index]);
+      }
+    },
+
+    _indexChanged: function (newIndex, oldIndex) {
+      if(newIndex >= 0){
+        this.updateGamepad();
+      }
+    },
+
+    _onGamepadConnected: function (e) {
+      this.updateGamepad();
+    },
+
+    _onGamepadDisconnected: function (e) {
+      this.updateGamepad();
+    },
+
+    attached: function () {
+      window.addEventListener('gamepadconnected', this._onGamepadConnected.bind(this));
+      window.addEventListener('gamepaddisconnected', this._onGamepadDisconnected.bind(this));
+    },
+
+    detached: function () {
+      window.removeEventListener('gamepadconnected', this._onGamepadConnected);
+      window.removeEventListener('gamepaddisconnected', this._onGamepadDisconnected);
+    }
+  };
+</script>
