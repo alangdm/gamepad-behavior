@@ -1,6 +1,6 @@
 {
   "name": "gamepad-behavior",
-  "description": "A behavior that gives easy access to the gamepad api.",
+  "description": "A polymer behavior that gives easy access to the gamepad api.",
   "main": "gamepad-behavior.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0"
