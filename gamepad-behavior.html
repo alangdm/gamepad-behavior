@@ -22,6 +22,7 @@
 
       gamepad: {
         type: Object,
+        readOnly: true,
         notify: true
       }
     },
@@ -29,8 +30,8 @@
     updateGamepad: function () {
       if(this.supported){
         //to force notify of timestamp/axes/other properties
-        this.set('gamepad', undefined);
-        this.set('gamepad', navigator.getGamepads()[this.index]);
+        this._setGamepad(undefined);
+        this._setGamepad(navigator.getGamepads()[this.index]);
         this.afterUpdate();
       }
     },
@@ -42,6 +43,10 @@
       if(newIndex >= 0){
         this.updateGamepad();
       }
+    },
+
+    _setGamepad: function (gamepad) {
+      this.set('gamepad', gamepad);
     },
 
     _onGamepadConnected: function (e) {
