@@ -18,7 +18,6 @@
   * the `afterUpdate` method and write custom logic which converts `GamepadButton`
   * data to primitive types or objects. (Check the `sample-gamepad` element in
   * the demo for an example.)
-  
   * @demo demo/index.html
   * @polymerBehavior
   */
@@ -83,11 +82,15 @@
     },
 
     _onGamepadConnected: function (e) {
-      this.updateGamepad();
+      if (e.gamepad.index === this.index) {
+        this.updateGamepad();
+      }
     },
 
     _onGamepadDisconnected: function (e) {
-      this.updateGamepad();
+      if (e.gamepad.index === this.index) {
+        this.updateGamepad();
+      }
     },
 
     attached: function () {
