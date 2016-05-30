@@ -13,7 +13,30 @@
   <script>
     Polymer({
       is: 'sample-gamepad',
-      behaviors: [GamepadBehavior]
+
+      behaviors: [GamepadBehavior],
+
+      properties: {
+        buttons: {
+          type: Object,
+          notify: true
+        }
+      },
+
+      afterUpdate: function () {
+        this.set('buttons', []);
+        if (this.gamepad) {
+          //to expose buttons to data binding as it seems the GamepadButton interface
+          //isn't compatible with data binding for some reason
+          var buttons = this.gamepad.buttons;
+          for (var i = 0; i < buttons.length; i++){
+              var button = {};
+              button.pressed = buttons[i].pressed;
+              button.value = buttons[i].value;
+              this.push('buttons', button);
+          }
+        }
+      }
     });
   </script>
 </dom-module>
