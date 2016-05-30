@@ -8,13 +8,13 @@
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../gamepad-behavior.html">
+    <link rel="import" href="simple-gamepad.html">
   </head>
   <body>
 
     <test-fixture id="basic">
       <template>
-        <gamepad-behavior></gamepad-behavior>
+        <simple-gamepad></simple-gamepad>
       </template>
     </test-fixture>
 
@@ -23,7 +23,7 @@
 
         test('instantiating the element works', function() {
           let element = fixture('basic');
-          assert.equal(element.is, 'gamepad-behavior');
+          assert.equal(element.is, 'simple-gamepad');
         });
 
       });
