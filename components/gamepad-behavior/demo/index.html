@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+  <head>
+    <title>gamepad-behavior demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="sample-gamepad.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+
+    <div class="vertical-section-container centered">
+      <h3>Check browser support</h3>
+      <demo-snippet>
+        <template>
+          <template is="dom-bind">
+            <div hidden$="[[!supported]]">
+              Gamepad Api is supported by the browser
+            </div>
+            <div hidden$="[[supported]]">
+              Gamepad Api is not supported by the browser
+            </div>
+            <sample-gamepad supported="{{supported}}"></sample-gamepad>
+          </template>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Using gamepad for player 1</h3>
+      <demo-snippet>
+        <template>
+          <template is="dom-bind" id="demo2">
+            <div>
+              Id: [[gamepad.id]]
+            </div>
+
+            <div>
+              Index: [[gamepad.index]]
+            </div>
+
+            <div>
+              Connected: [[gamepad.connected]]
+            </div>
+
+            <div>
+              Mapping: [[gamepad.mapping]]
+            </div>
+
+            <div>
+              Timestamp: [[gamepad.timestamp]]
+            </div>
+
+            <div>
+              Axes:
+              <template is="dom-repeat" items="[[gamepad.axes]]" as="axes">
+                <div>[[index]]: [[axes]]</div>
+              </template>
+            </div>
+
+            <div>
+              Buttons: (Note: Button binding isn't supported directly by the behavior
+              due to problems with the GamepadButton interface and should be
+              implemented on the element using the behavior)
+              <template is="dom-repeat" items="[[buttons]]" as="button">
+                <div>[[index]] - Pressed: [[button.pressed]] Value: [[button.value]]</div>
+              </template>
+            </div>
+
+            <button onclick="updateDemoGamepad()">Update</button>
+
+            <sample-gamepad index="0" gamepad="{{gamepad}}" buttons="{{buttons}}" id="gamepad"></sample-gamepad>
+
+            <script>
+              var demo2 = document.querySelector('#demo2');
+
+              function updateDemoGamepad () {
+                demo2.$.gamepad.updateGamepad();
+              }
+            </script>
+          </template>
+        </template>
+      </demo-snippet>
+    </div>
+
+  </body>
+</html>

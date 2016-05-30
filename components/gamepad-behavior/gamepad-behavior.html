@@ -1,0 +1,106 @@
+<link rel="import" href="../polymer/polymer.html">
+
+
+
+<script>
+  /**
+  * Use `GamepadBehavior` to implement a custom way of exposing gamepad data for
+  * easy use.
+  *
+  * All code is based on the [Working Draft for the Gamepad API](https://www.w3.org/TR/gamepad/).
+  *
+  * Each instance of an element implementing this behavior is meant to expose data
+  * for a single gamepad at a time.
+  *
+  * It would seem that Polymer's data binding is incompatible with the
+  * [`GamepadButton` Interface](https://www.w3.org/TR/gamepad/#gamepadbutton-interface)
+  * so if you need to expose button data with data binding you should implement
+  * the `afterUpdate` method and write custom logic which converts `GamepadButton`
+  * data to primitive types or objects. (Check the `sample-gamepad` element in
+  * the demo for an example.)
+  * @demo demo/index.html
+  * @polymerBehavior
+  */
+  GamepadBehavior = {
+
+    properties: {
+      /**
+      * Whether the Gamepad API is supported or not.
+      */
+      supported: {
+        type: Boolean,
+        readOnly: true,
+        value: function () {
+          return !!navigator.getGamepads;
+        }
+      },
+
+      /**
+      * Index of the Gamepad the element is bound to.
+      */
+      index: {
+        type: Number,
+        observer: '_indexChanged'
+      },
+
+      /**
+      * The Gamepad object in the current index.
+      */
+      gamepad: {
+        type: Object,
+        readOnly: true,
+        notify: true
+      }
+    },
+
+    /**
+    * Update the Gamepad object to its current state.
+    */
+    updateGamepad: function () {
+      if(this.supported){
+        //to force notify of timestamp/axes/other properties
+        this._setGamepad(undefined);
+        this._setGamepad(navigator.getGamepads()[this.index]);
+        this.afterUpdate();
+      }
+    },
+
+    /**
+    * Implement custom logic to be called after the Gamepad is updated.
+    */
+    afterUpdate: function () {
+    },
+
+    _indexChanged: function (newIndex, oldIndex) {
+      if(newIndex >= 0){
+        this.updateGamepad();
+      }
+    },
+
+    _setGamepad: function (gamepad) {
+      this.set('gamepad', gamepad);
+    },
+
+    _onGamepadConnected: function (e) {
+      if (e.gamepad.index === this.index) {
+        this.updateGamepad();
+      }
+    },
+
+    _onGamepadDisconnected: function (e) {
+      if (e.gamepad.index === this.index) {
+        this.updateGamepad();
+      }
+    },
+
+    attached: function () {
+      window.addEventListener('gamepadconnected', this._onGamepadConnected.bind(this));
+      window.addEventListener('gamepaddisconnected', this._onGamepadDisconnected.bind(this));
+    },
+
+    detached: function () {
+      window.removeEventListener('gamepadconnected', this._onGamepadConnected);
+      window.removeEventListener('gamepaddisconnected', this._onGamepadDisconnected);
+    }
+  };
+</script>
