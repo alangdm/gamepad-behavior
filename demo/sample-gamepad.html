@@ -15,7 +15,7 @@
       }
     },
 
-    afterUpdate: function () {
+    _afterUpdate: function () {
       this.set('buttons', []);
       if (this.gamepad) {
         //to expose buttons to data binding as it seems the GamepadButton interface
