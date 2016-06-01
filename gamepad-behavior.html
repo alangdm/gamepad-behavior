@@ -78,10 +78,6 @@
       }
     },
 
-    _setGamepad: function (gamepad) {
-      this.set('gamepad', gamepad);
-    },
-
     _onGamepadConnected: function (e) {
       if (e.gamepad.index === this.index) {
         this.updateGamepad();
