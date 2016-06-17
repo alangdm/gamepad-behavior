@@ -16,17 +16,15 @@
     },
 
     _afterUpdate: function () {
-      this.set('buttons', []);
       if (this.gamepad) {
         //to expose buttons to data binding as it seems the GamepadButton interface
         //isn't compatible with data binding for some reason
-        let buttons = this.gamepad.buttons;
-        for (let i = 0; i < buttons.length; i++){
-            let button = {};
-            button.pressed = buttons[i].pressed;
-            button.value = buttons[i].value;
-            this.push('buttons', button);
-        }
+        this.set('buttons', Array.from(this.gamepad.buttons, function (button) {
+          return {pressed: button.pressed, value: button.value};
+        }));
+      }
+      else {
+        this.set('buttons', []);
       }
     }
   });
